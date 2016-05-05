@@ -1,6 +1,29 @@
+/*
+
+This script attempts to be a crude generic MQTT proxy.
+
+It should be considered alpha quality and not production ready
+
+Many use cases not properly implemented/tested.
+
+Please report any issues here: https://github.com/nzfarmer1/mqtt-proxy/issues
+
+Author: Andrew McClure (AgSense NZ)
+
+MQTT Client Connect Error codes from:
+http://www.eclipse.org/paho/files/mqttdoc/Cclient/_m_q_t_t_client_8h.html
+
+1: Connection refused: Unacceptable protocol version
+2: Connection refused: Identifier rejected
+3: Connection refused: Server unavailable
+4: Connection refused: Bad user name or password
+5: Connection refused: Not authorized
+6-255: Reserved for future use
+*/
+
+
 var mqtt = require('mqtt'),
     util = require('util'),
-    fs = require('fs'),
     path = require('path');
 
 var script = path.basename(process.argv[1]);
@@ -50,40 +73,27 @@ function getMap(client) {
     return (map === 'undefined') ? null : maps[map];
 }
 
-//console.log("before normal mqtt create server")
-//var server = new mqtt.MqttServer(function(client) {
+console.log("before start server ..");
+
+process.on('SIGINT', function() {
+    console.log('Received interrupt');
+    for (c in self.clients) {
+        self.clients[c].emit('close');
+    }
+    process.exit();
+});
 
 
+var startServer = function createServer() {
 
-var KEY = __dirname + '/ssl/agent1-key.pem';
-var CERT = __dirname + '/ssl/agent1-cert.pem';
-var opts = {};
+    var client;
 
-if ('string' === typeof KEY && 'string' === typeof CERT) {
-    opts.key = fs.readFileSync(KEY);
-    opts.cert = fs.readFileSync(CERT);
-} else if ('object' === typeof keyPath) {
-    opts = keyPath;
-    listener = certPath;
-}
-
-console.log("before secured mqtt create server")
-var server = new mqtt.MqttSecureServer(opts, function(client) {
-
-    console.log("on client ..")
-
+    console.log("Defining client   ..");
     var self = this;
 
     if (!self.proxies) self.proxies = {};
     if (!self.clients) self.clients = {};
-
-    process.on('SIGINT', function() {
-        console.log('Received interrupt');
-        for (c in self.clients) {
-            self.clients[c].emit('close');
-        }
-        process.exit();
-    });
+    var server = new mqtt.MqttServer(client).listen(port, host);
 
     client.now = function() {
         return (new Date()).valueOf();
@@ -285,11 +295,9 @@ var server = new mqtt.MqttSecureServer(opts, function(client) {
         console.log('Client error: (%s)', (e === 'undefined') ? '' : e);
     });
 
-}).listen(port, host);
 
-server.on('error', function(e) {
-    console.log(script + ": %s", e);
-});
+    server.on('error', function(e) {
+        console.log(script + ": %s", e);
+    });
 
-console.log('Server listen on port %s', port);
-console.log('Server listen on host %s', host);
+}()
