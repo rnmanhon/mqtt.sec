@@ -44,7 +44,7 @@ config.tokens_engine = 'oauth2';
 
 
 
-config.pep_port = 80;
+//config.pep_port = 80;
 // Set this var to undefined if you don't want the server to listen on HTTPS
 
 config.account_host = 'https://account.lab.fiware.org';

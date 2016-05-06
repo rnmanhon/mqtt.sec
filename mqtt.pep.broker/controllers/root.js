@@ -13,7 +13,7 @@ var logger = Bunyan.createLogger({
 });
 
 var Root = (function() {
-    var pep = function(auth_token, topic) {
+    var pep = function(auth_token, action, topic) {
         if (auth_token === undefined) {
             logger.error('Auth-token not found!');
             return false;
@@ -26,7 +26,7 @@ var Root = (function() {
             IDM.check_token(auth_token, function(user_info) {
                 if (config.azf.enabled) {
 
-                    AZF.check_permissions(auth_token, user_info, topic, function() {
+                    AZF.check_permissions(auth_token, user_info, action, topic, function() {
                         logger.info('auth_token valid (azf enabled)!');
                         return true;
                     }, function(status, e) {
