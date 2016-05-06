@@ -2,9 +2,6 @@
 // ***********
 
 var mosca = require('mosca');
-var Bunyan = require( 'bunyan' ),
-    logger;
-
 var server = new mosca.Server({
     port: 3882,
     bundle: true

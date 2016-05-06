@@ -1,0 +1,13 @@
+{
+  "name": "mqtt.pep.proxy",
+  "version": "0.1.0",
+  "description": "PEP oauth2 authentication proxy for MQTT",
+  "dependencies": {
+    "express": "4.x",
+    "xml2json": "0.4.0",
+    "log4js": "0.6.x",
+    "escape-html": "1.0.3",
+    "xmlhttprequest": "1.8.0",
+    "errorhandler": "1.x"
+  },
+}

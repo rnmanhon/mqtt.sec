@@ -147,10 +147,6 @@ function handleClient(client) {
             delete self.proxies[client.id];
             delete self.clients[client.id];
         });
-        
-//        stream.on('packet', function() {
-//            console.log('Proxy stream packet');
-//        });
 
         proxy.on('connect', function() {
             console.log('Proxy connect');
@@ -158,7 +154,6 @@ function handleClient(client) {
                 returnCode: rc
             });
         });
-        
 
         proxy.on('error', function(e) {
             //Check for Auth errors!
