@@ -26,12 +26,20 @@ config.password = 'idm';
 
 config.keystone_host = 'localhost';
 config.keystone_port = 5000;
+config.horizon_host = 'localhost';
+config.horizon_port = 8000;
+
 
 // in seconds
 config.chache_time = 300;
 
 // options: oauth2/keystone
 config.tokens_engine = 'oauth2';
+
+config.app_id = '589ad81257af4de190622a56ef52726e';
+config.app_secret = 'af34af2ee01940abab221f8b0969fddb';
+
+
 
 
 //config.app_mqtt_host = '172.17.0.1';

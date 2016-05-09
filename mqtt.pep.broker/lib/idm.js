@@ -10,8 +10,6 @@ var logger = Bunyan.createLogger({
     }]
 });
 
-//var log = require('./logger').logger.getLogger("IDM-Client");
-
 var IDM = (function() {
 
     var my_token,
@@ -123,9 +121,72 @@ var IDM = (function() {
     };
 
 
+    var grantAccessToken = function(userName, userPassword, callback, callbackError) {
+        var apiOptions = {
+            horizonServer: "http://" + config.horizon_host + ":" + config.horizon_port
+        };
+
+        var requestOptions, path;
+        logger.info('grantAccessToken .... ');
+
+        var clientID = config.app_id;
+        var clientSecret = config.app_secret;
+
+        var auth = "Basic " + new Buffer(cilentID + ":" + clientSecret).toString("base64");
+        var form = {
+            grant_type: 'password',
+            username: userName,
+            password: userPassword,
+            redirect_uri: config.app_redirectUrl
+        };
+
+        var formData = querystring.stringify(form);
+        var contentLength = formData.length;
+
+        logger.debug('form %j ', form);
+        logger.debug('formData ' + formData);
+        logger.debug('contentLength ' + contentLength);
+
+        requestOptions = {
+            url: apiOptions.horizonServer + path,
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Accept': 'application/json',
+                "Authorization": auth,
+                'Content-Length': contentLength,
+            },
+            body: formData,
+        };
+        logger.debug("requestOptions  %j ", requestOptions);
+
+        request(
+            requestOptions,
+            function(err, response, body) {
+                var i, data;
+                logger.info('after return from horizon server .... ');
+                logger.debug('tken return response are %j', response);
+                logger.debug('tken return body are %j', JSON.parse(body));
+
+                if ((typeof(response) != "undefined") &&
+                    (response.statusCode === 200)) {
+
+                    var accessToken = _.getPath(JSON.parse(body), "access_token");
+                    console.log('accessToken  is ', accessToken);
+                    callback(accessToken);
+                } else {
+                    console.log('err %j', err);
+                    console.log('response %j ', response);
+                    callbackError(503, 'Error in getting access token from IDM');
+                }
+            }
+        ); // request
+    };
+
     return {
         authenticate: authenticate,
-        check_token: check_token
+        check_token: check_token,
+        grantAccessToken: grantAccessToken
     }
 
 })();
