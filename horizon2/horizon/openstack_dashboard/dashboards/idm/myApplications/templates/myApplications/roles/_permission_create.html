@@ -1,0 +1,60 @@
+{% extends "horizon/common/_modal_form.html" %}
+{% load i18n %}
+{% load url from future %}
+
+{% block form_id %}create_permission_form{% endblock %}
+{% block form_action %}{% url 'horizon:idm:myApplications:permissions_create' application_id=application_id %}{% endblock %}
+{% block form_class %}{% if inline_forms %}ajax-inline-create{% endif %}{% endblock %}
+
+{% block modal-header %}
+    <h3>Create permission</h3>  
+{% endblock %}
+
+{% block modal-body %}
+  <fieldset>
+    {% include 'horizon/common/_form_errors.html' with form=form %}
+    {# Name and Description #}
+    {% include 'horizon/common/_form_field.html' with field=form.name %}
+    {% include 'horizon/common/_form_field.html' with field=form.description %}
+    
+    <div class="panel-group" id="accordion">
+      <div class="panel">
+        <div class="panel-headding">  
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse-verb-resource" class="panel-heading collapsed">
+            <h4 class="panel-title panel-close">
+              HTTP Verb and Resource Rule
+            </h4>
+          </a>
+        </div>
+        <div id="collapse-verb-resource" class="panel-collapse collapsed in">
+          <div class="panel-body">
+            {# Action and Resource #}
+            {% include 'horizon/common/_form_field.html' with field=form.action %}
+            {% include 'horizon/common/_form_field.html' with field=form.resource %}
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-headding">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse-xacml" class="panel-heading collapsed">
+            <h4 class="panel-title panel-close">
+              Advanced XACML Rule
+            </h4>
+          </a>
+        </div>
+        <div id="collapse-xacml" class="panel-collapse collapse">
+          <div class="panel-body">
+            {# Advanced XACML Rule #}
+            {% include 'horizon/common/_form_field.html' with field=form.xml %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+{% endblock %}
+
+{% block modal-footer %}
+  <input class="btn btn-primary pull-right {% if inline_forms%}ajax-inline-create always-enabled{% endif %}" 
+    type="{% if inline_forms %}button{% else%}submit{% endif %}" 
+    value="{% trans "Save" %}" />
+{% endblock %}

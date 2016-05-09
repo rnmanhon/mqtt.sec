@@ -1,0 +1,16 @@
+.popover{
+  background-color: $gray-lighter;
+  border-radius: 0;
+  .arrow::after{
+    border-top-color: $gray-lighter !important;
+    bottom: 2px !important;
+  }
+  .popover-content{
+    padding: 15px;
+    font-size: 12px;
+    color: $gray-dark;
+    a{
+      font-weight: bold;
+    }
+  }
+}

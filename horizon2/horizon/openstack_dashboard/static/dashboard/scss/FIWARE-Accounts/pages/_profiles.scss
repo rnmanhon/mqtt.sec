@@ -1,0 +1,69 @@
+#detailApplication,
+#detailUser{
+  .logo{
+    margin-top: -7px !important;
+  }
+}
+#detailOrganization,
+#detailApplication,
+#detailUser{
+  header .name{
+    color: $gray-dark;
+  }
+}
+#detailOrganization,
+#detailApplication,
+#detailUser{
+  header{
+    position: relative;
+    .name a{
+      margin-left: 6px;
+      border-left: 1px solid #CCC;
+      padding-left: 10px;
+      padding-top: 7px;
+      &:hover{
+        color: #C1C1C1;
+      }
+    .fa-cogs{
+      margin-right: 2px;
+    }
+    }
+    .logo{
+      position: absolute;
+      right: 12px;
+      top: 6px;
+    }
+  }
+  .extra{
+    min-height: 30px;
+    .panel-title{
+      text-align: right;
+    }
+    .collapse{
+      margin-bottom: 0;
+      div{
+          min-height: 40px;
+        p{
+           word-break: break-word;
+           margin-bottom: 15px;
+        }
+      }
+    }
+  }
+}
+
+.description {
+  .info {
+    .details {
+      padding-bottom: 17px;
+      p{
+        margin: 0 80px 10px 0;
+      }
+    }
+    .read-more, .read-less{
+      font-family: "NeoTechRegular";
+      font-size: 1.1em;
+      margin-left: 3px
+    }
+  }
+}

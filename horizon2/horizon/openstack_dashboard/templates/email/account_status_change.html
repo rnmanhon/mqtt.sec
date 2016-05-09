@@ -1,0 +1,37 @@
+{% extends "email/base_email.html" %}
+
+{% block content %}
+  <p>Hello {{ user.username }}!</p>
+
+  <p>Your FIWARE Lab account status has changed. Your new account status details are:</p>
+
+  <p>Current account type: <b>{{ account_type }}</b></p>
+  {% if regions %}
+    <p>Authorized regions: 
+      <b>
+      {% for region in regions%}
+        {{ region }}{% if not forloop.last %}, {% endif %}
+      {% endfor %}
+      </b>
+    </p>
+  {% endif %}
+  {% if started_at %}
+    <p>Started at: <b>{{ started_at }}</b></p>
+  {% endif %}
+  {% if duration %}
+    <p>Duration: <b>{{ duration }} days</b></p>
+  {% endif %}
+  {% if end_date %}
+    <p>Expires at: <b>{{ end_date }}</b></p>
+  {% endif %}
+
+  {% if show_cloud_info %}
+    <p>You are now able to use the <a href="https://cloud.lab.fiware.org" style="color: #193B6B; text-decoration: none;" onMouseOver= "this.style.cssText= 'color: #48B9C9; text-decoration: none;'" onMouseOut= "this.style.cssText= 'color: #193B6B; text-decoration: none;'">FIWARE Lab Cloud Portal</a> and its infrastructure, until your account status expires. If you want to authorize other users in your cloud organization, you can find a tutorial <a href="http://forge.fiware.org/plugins/mediawiki/wiki/fiware/index.php/FIWARE_Lab:_Upgrade_to_Community_Account#How_can_authorize_other_users_to_use_my_cloud_resources.3F" style="color: #193B6B; text-decoration: none;" onMouseOver= "this.style.cssText= 'color: #48B9C9; text-decoration: none;'" onMouseOut= "this.style.cssText= 'color: #193B6B; text-decoration: none;'">here</a>.</p>
+  {% else %}
+    <p>You are not allowed to use the cloud resources associated with your authorized organization anymore. If you want to continue to use it, please request a Community Account following the <a href="http://forge.fiware.org/plugins/mediawiki/wiki/fiware/index.php/FIWARE_Lab:_Upgrade_to_Community_Account" style="color: #193B6B; text-decoration: none;" onMouseOver= "this.style.cssText= 'color: #48B9C9; text-decoration: none;'" onMouseOut= "this.style.cssText= 'color: #193B6B; text-decoration: none;'">steps defined here</a>.</p>
+  {% endif %}
+
+  <p>Keep enjoying FIWARE Lab,</p>
+  <p>FIWARE Lab administrators.</p>
+  {% include "email/_massive_email_footer.html" %}
+{% endblock %}

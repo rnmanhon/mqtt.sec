@@ -1,0 +1,26 @@
+Hello {{ user.username }}!
+
+Your FIWARE Lab account status has changed. Your new account status details are:
+
+Current account type: {{ account_type }}
+{% if regions %}
+  Authorized regions: {% for region in regions%}{{ region }}{% if not forloop.last %}, {% endif %}{% endfor %}
+{% endif %}
+{% if started_at %}
+  Started at: {{ started_at }}
+{% endif %}
+{% if duration %}
+  Duration: {{ duration }} days
+{% endif %}
+{% if end_date %}
+  Expires at: {{ end_date }}
+{% endif %}
+
+{% if show_cloud_info %}
+  You are now able to use the FIWARE Lab Cloud Portal and its infrastructure, until your account status expires. If you want to authorize other users in your cloud organization, you can find a tutorial here: http://forge.fiware.org/plugins/mediawiki/wiki/fiware/index.php/FIWARE_Lab:_Upgrade_to_Community_Account#How_can_authorize_other_users_to_use_my_cloud_resources.3F.
+{% else %}
+  You are not allowed to use the cloud resources associated with your authorized organization anymore. If you want to continue to use it, please request a Community Account following the steps defined here: http://forge.fiware.org/plugins/mediawiki/wiki/fiware/index.php/FIWARE_Lab:_Upgrade_to_Community_Account.
+{% endif %}
+
+Keep enjoying FIWARE Lab,
+FIWARE Lab administrators.

@@ -1,0 +1,24 @@
+{% extends "horizon/client_side/template.html" %}
+{% load horizon %}
+
+{% block id %}table_row_template{% endblock %}
+
+{% block template %}{% spaceless %}{% jstemplate %}
+<div class="list-group-item">
+  <a class="item" href="[[detail_url]]">
+    <div class="avatar filter_field"><img src="[[img_small]]"></div>
+    <div class="name filter_field">[[name]]</div>
+    [[#description]] 
+      <div class="description filter_field">[[description]]</div>
+    [[/description]]
+    [[#url]] 
+      <div class="url filter_field">[[url]]</div>
+    [[/url]]
+    [[#switch]] 
+      <div class="switch filter_field">
+        <a class="btn btn-link" href="[[switch]]">switch</a>
+      </div>
+    [[/switch]] 
+  </a>
+</div>
+{% endjstemplate %}{% endspaceless %}{% endblock %}

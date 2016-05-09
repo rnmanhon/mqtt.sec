@@ -1,0 +1,60 @@
+{% extends "horizon/common/_modal_form.html" %}
+{% load i18n %}
+{% load url from future %}
+
+
+{% block form_id %}{% endblock %}
+{% block form_action %}{% url 'horizon:idm_admin:notify:index' %}{% endblock %}
+
+
+{% block modal_id %}notify{% endblock %}
+{% block modal-header %}
+    {% include "horizon/common/_domain_page_header.html" with title="Notify" %}
+{% endblock %}
+
+{% block modal-body %}
+
+  <fieldset>
+    {% include "horizon/common/_form_fields.html" %}
+  </fieldset>
+
+  <script type="text/javascript">
+    $(document).ready(function(){
+
+      function show_complementary_fields(select_value) {
+        console.log(select_value)
+        if (select_value == 'organization') {
+          $('#id_organization').closest('div.form-group').show();
+          $('#id_user_ids').closest('div.form-group').hide();
+          $('.radio').closest('div.form-group').hide();
+        } else if (select_value == 'all_users') {
+          $('#id_organization').closest('div.form-group').hide();
+          $('#id_user_ids').closest('div.form-group').hide();
+          $('.radio').closest('div.form-group').hide();
+        } else if (select_value == 'users_by_id') {
+          $('#id_organization').closest('div.form-group').hide();
+          $('#id_user_ids').closest('div.form-group').show();
+          $('.radio').closest('div.form-group').hide();
+        } else if (select_value == 'role'){
+          $('#id_organization').closest('div.form-group').hide();
+          $('#id_user_ids').closest('div.form-group').hide();
+          $('.radio').closest('div.form-group').show();
+        }
+      }
+
+      // initial load
+      show_complementary_fields($('#id_notify option:selected').val());
+
+      // on change
+      $('#id_notify').on('change', function() {
+        show_complementary_fields(this.value);
+      });
+    });
+  </script>
+{% endblock %}
+
+{% block modal-footer %}
+
+    <button type="submit" class="btn btn-primary">{% trans "Send" %}</button>
+
+{% endblock %}

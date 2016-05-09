@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Home" %}{% endblock %}
+
+{% block page_header %}
+  {% include "horizon/common/_domain_page_header.html" with title="Home" %}
+{% endblock page_header %}
+
+{% block main %}
+<div id="home">
+  {{ applications_table.render}}
+  {{ members_table.render}}
+</div>
+{% endblock %}
+
+
+
+

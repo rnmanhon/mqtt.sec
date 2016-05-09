@@ -1,0 +1,34 @@
+<div class="{% if not table.hide_panel %}panel panel-default{% endif %} datatable" id="{{ table.slugify_name }}"
+{% if table.pagination_url %}
+  data-pagination-url="{% url table.pagination_url %}"
+  {% for key, value in table.filter_data.items %}
+    data-{{ key }}="{{ value }}"
+  {% endfor %}
+  data-pagination-pages="{{ table.pages }}"
+{% endif %}>
+{% if not table.hide_panel %}
+  <div class="panel-heading">
+    {% block table_heading %}
+      <span class="title">{{ table }}</span>
+      {{ table.render_table_actions }}
+    {% endblock %}
+  </div>
+  <div class="panel-body datatable-content">
+{% endif %}
+    {% block table_body %}
+      <div class="list-group" id="{{ table.slugify_name }}_content">
+        {% for row in table.get_rows %}
+          {{ row.render }}
+        {% endfor %}
+      </div>
+      <p class="alert alert-info empty">{{ table.empty_message }}</p>
+    {% endblock %}
+{% if not table.hide_panel %}
+  </div>
+{% endif %}
+  <div class="panel-footer">
+    {% block table_footer %}
+      <nav id="{{table.slugify_name}}_pagination_container"></nav>
+    {% endblock %}
+  </div>
+</div>

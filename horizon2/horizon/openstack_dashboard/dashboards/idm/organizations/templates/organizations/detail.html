@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Organizations" %}{% endblock %}
+
+{% block page_header %}{% endblock page_header %}
+
+{% block main %}
+<div id="detailOrganization">
+  <header>
+    <h3 class="name">
+      {{ organization.name }}
+      {% if edit %}
+      <a href="{% url 'horizon:idm:organizations:edit' organization_id %}" class="small"><i class="fa fa-edit"></i><span>edit</span></a>
+      {% endif %}
+      {%if member%}
+      <a href="{% url 'horizon:idm:organizations:remove' organization_id %}" data-target="#myModal" class="small ajax-modal"><i class="fa fa-sign-out"></i><span>exit</span></a>
+      {%endif%}
+    </h3>
+
+    <div class="logo">
+      <img alt="organization logo" src="{{ image }}">
+    </div>
+  </header>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="description">
+        <h5>
+          Description
+        </h5>
+        <div class="info expander">
+          {% if organization.description %}
+          <p>{{ organization.description }}</p>
+          {% else %}
+          <p><i>No description available</i></p>
+          {% endif %}
+        </div>
+      </div> 
+      {% if organization.website %}
+      <div class="contact_us">
+        <h5>
+          Website
+        </h5>
+        <div>
+          <p>{{ organization.website }}</p>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  {{ members_table.render}}
+
+  {{ applications_table.render}}
+  
+</div>
+{% endblock %}

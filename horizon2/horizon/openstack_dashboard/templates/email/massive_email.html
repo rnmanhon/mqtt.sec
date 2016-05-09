@@ -1,0 +1,6 @@
+{% extends "email/base_email.html" %}
+
+{% block content %}
+    {{ html | safe }}
+    {% include "email/_massive_email_footer.html" %}
+{% endblock %}

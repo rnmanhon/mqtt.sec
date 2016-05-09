@@ -1,0 +1,20 @@
+{% comment %}
+{# NOTE(garcianvalon) client-side rendering #}
+{% if cell.column.name == 'id' %}
+  {# do nothing #}
+{% else %}
+  <div class="{{cell.column.name}} filter_field">
+    {% if cell.column.name == 'name' or cell.column.name == 'username' %}
+      {{ cell.value }}
+    {% elif cell.column.name == 'switch' and cell.value != False %}
+      <a class="btn btn-link" href="{{ cell.value }}">switch</a>
+    {% elif  cell.column.name == 'description' %}
+      {{ cell.value }}
+    {% elif  cell.column.name == 'url' %}
+      {{ cell.value }}
+    {% elif cell.column.name == 'avatar' %}
+      <img src="{{cell.value}}">
+    {% endif %}
+  </div>
+{% endif %}
+{% endcomment %}

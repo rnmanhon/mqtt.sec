@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Plantilla header-collapse</title>
+ 
+    <!-- CSS de Bootstrap -->
+    <link href="css/bootstrap-frame.css" rel="stylesheet" media="screen">
+    <link href="css/style.css" rel="stylesheet" media="screen">
+    <link href="css/font-awesome.css" rel="stylesheet" media="screen">
+
+  </head>
+  <body>
+
+
+<header class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-navbar-collapse">
+        <span class="fa fa-angle-double-down"></span>
+      </button>
+      <div class="logo-fl-header">
+        <a href="#" class="brand">
+
+        </a>
+      </div>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="header-navbar-collapse">
+
+      <div id="user_info" class="col-md-pull-3 nav navbar-nav navbar-right">
+
+        <div id="profile_editor_switcher" class="dropdown switcher_bar" tabindex="1">
+          <a href="·">        
+            <img alt="User" src="img/logos/small/user.png">    
+            idm
+          </a>
+            
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#profile_editor_switcher">
+            <i class="fa fa-angle-double-down"></i>
+          </a>
+
+
+          <ul id="editor_list" class="dropdown-menu multi-level dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu">
+            <li class="dropdown-submenu">
+              <a tabindex="-1" href="#">
+                <i class="fa fa-angle-double-left"></i> Switch session
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <li>
+                  <a href="#">
+                    <img src="img/logos/small/group.png">
+                    sdfdfsf
+                  </a>
+                </li>
+              </ul>
+            </li>
+            
+            <li>
+              <a href="/settings/"> <i class="fa fa-cog"></i> Settings
+              </a>
+            </li>
+            <li>
+              <a href="#" onclick="Fiware.signOut('account'); return false">
+                <i class="fa fa-sign-out"></i> Sign Out
+              </a>
+            </li>
+          </ul>
+        </div>        
+      </div>
+
+
+      <ul class="nav navbar-nav col-md-push-9">
+        <li class="">
+          <a href="https://cloud.lab.fiware.org/">
+            Cloud
+          </a>
+        </li>
+        <li class="">
+          <a href="https://store.lab.fiware.org/">
+            Store
+          </a>
+        </li>
+        <li class="">
+          <a href="https://mashup.lab.fiware.org/">
+            Mashup
+          </a>
+        </li>
+        <li class="">
+          <a href="https://data.lab.fiware.org">
+            Data
+          </a>
+        </li>
+        <li class="">
+          <a href="https://account.lab.fiware.org">
+            Account
+          </a>
+        </li>
+        <li class="">
+          <a href="http://help.lab.fiware.org/">
+            Help&info
+          </a>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</header>
+
+
+    <div class="container-fluid">
+     
+    </div>
+    <footer class="footer-main">
+      <div class="container-fluid wrap">
+        <div class="footer-content">
+
+          <div class="cred">
+
+            2015 &copy; 
+            <a href="http://www.fiware.org/">FIWARE</a>.
+
+            The use of FIWARE Lab services is subject to the acceptance of the
+            <a href="http://forge.fiware.org/plugins/mediawiki/wiki/fiware/index.php/FIWARE_LAB_Terms_and_Conditions" target="a_blank">Terms and Conditions</a>,
+
+            <a href="http://forge.fiware.org/plugins/mediawiki/wiki/fiware/index.php/FIWARE_Lab_Personal_Data_Protection_Policy" target="a_blank">Personal Data Protection Policy</a>
+            and 
+            <a href="http://forge.fiware.org/plugins/mediawiki/wiki/fiware/index.php/Cookies_Policy_FIWARE_Lab" target="a_blank">Cookies Policy</a>.
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- Librería jQuery requerida por los plugins de JavaScript -->
+    <script src="http://code.jquery.com/jquery.js"></script>
+
+    <script src="js/collapse.js"></script>
+  </body>
+</html>

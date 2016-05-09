@@ -1,0 +1,53 @@
+{% load i18n %}
+
+<div class="membership {{ step.slug }}_membership dropdown_fix add-members" data-show-roles="{{ step.show_roles }}">
+  <div class="all-users">
+    <header>
+      <h4>{{ step.available_list_title }}</h4>
+      <div class="form-group has-feedback">
+        <input type="text" name="available_{{ step.slug }}_filter" id="available_{{ step.slug }}" class="filter {{ step.slug }}_server_filter form-control input-sm" placeholder="{% trans "filter" %}" data-url="{{ step.server_filter_url }}" {% if step.filter_by_organization %} data-org="{{step.workflow.request.organization.id}}"{% endif %}>
+      </div>
+      <div id="spinner_{{ step.slug }}" class="filtering-spinner-inline"><i class="fa fa-circle-o-notch fa-spin"></i></div>
+    </header>
+    <div class="filterable {{ step.slug }}_server_filterable" id="available_{{ step.slug }}">
+      <ul class="available_members available_{{ step.slug }} list-group"></ul>
+      <ul class="no_results list-group alert alert-info" id="no_available_{{ step.slug }}">
+        <li>{{ step.no_available_text }}</li>
+      </ul>
+      <ul class="no_results list-group alert alert-info" id="perform_filter_available_{{ step.slug }}">
+        <li>{{ step.server_filter_text }}</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="members-list">
+    <header>
+      <h4>{{ step.members_list_title }}</h4>
+      <div class="form-group has-feedback">
+        <input type="text" name="{{ step.slug }}_members_filter" id="{{ step.slug }}_members" class="filter {{ step.slug }}_client_filter form-control input-sm" placeholder="{% trans "filter" %}">
+        </div>
+    </header>
+    <div class="filterable {{ step.slug }}_client_filterable" id="{{ step.slug }}_members">
+      <ul class="members {{ step.slug }}_members list-group"></ul>
+      <ul class="no_results list-group alert alert-info" id="no_{{ step.slug }}_members">
+        <li>{{ step.no_members_text }}</li>
+      </ul>
+    </div>
+    <div class="alert alert-warning no_roles_warning">{{ step.workflow.no_roles_message }}</div>
+  </div>
+</div>
+
+<div class="hide">
+  {% include "horizon/common/_form_fields.html" %}
+</div>
+
+
+<script>
+  if (typeof horizon.membership !== 'undefined') {
+    horizon.membership.workflow_init($(".workflow"), "{{ step.slug }}", "{{ step.get_id }}");
+  } else {
+    addHorizonLoadEvent(function() {
+      horizon.membership.workflow_init($(".workflow"), "{{ step.slug }}", "{{ step.get_id }}");
+    });
+  }
+</script>

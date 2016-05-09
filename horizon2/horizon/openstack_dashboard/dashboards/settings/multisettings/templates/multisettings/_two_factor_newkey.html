@@ -1,0 +1,48 @@
+{% extends "horizon/common/_modal.html" %}
+{% block modal_id %}two_factor_enable_modal{% endblock %}
+{% block modal-header %}Setting up Two-Factor Authentication{% endblock %}
+
+{% block modal-body %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-6 middle">
+      <h4>Get your app set</h5>
+      <div class="steps">
+        <div class="col-md-2 step">1</div>
+        <p class="col-md-10">Download and open an authentication app, e.g.: <b>Google Authenticator</b></p>
+      </div>
+      <div class="steps">
+        <div class="col-md-2 step">2</div>
+        <p class="col-md-10">Configure a new account using any of the following:</p>
+      </div>
+      <ul class="codes">
+        <li><p>Scan this QR code</p>
+            {% if two_factor_qr_encoded %}
+            <p><img src="data:image/svg+xml;base64,{{ two_factor_qr_encoded }}" /></p>
+            {% endif %}
+        </li>
+          <li><p>Insert this key manually</p>
+              {% if two_factor_key %}
+              <p class="manual_code"><strong>{{ two_factor_key }}</strong></p>
+              {% endif %}
+          </li>
+      </ul>
+    </div>
+    <div class="col-md-6">
+      <h4>Access your account</h4>
+      <div class="steps">
+        <div class="col-md-2 step">3</div>
+        <p class="col-md-10">Every time you want to access your account, you will be asked for a verification code, which you can get from the authentication app you just configured.</p>
+        <img alt="mobile_login" class="verification_img" src="{{ STATIC_URL }}dashboard/img/settings/two_factor2.png">
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block modal-footer %}
+    {% if hide %}
+      <a href="{% url 'horizon:settings:multisettings:index' %}" class="btn btn-primary">Ok</a>
+      <a href="#" class="btn btn-default secondary cancel_newkey">Cancel</a>
+      {% endif %}
+{% endblock %}

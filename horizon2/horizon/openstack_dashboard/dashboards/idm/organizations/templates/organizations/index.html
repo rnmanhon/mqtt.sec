@@ -1,0 +1,16 @@
+{% extends 'idm/base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Organizations" %}{% endblock %}
+
+{% block page_header %}
+	{% include "horizon/common/_domain_page_header.html" with button_create='<a class="btn btn-primary" href="/idm/organizations/create/">Create</a>' title="Organizations" %}
+{% endblock page_header %}
+
+{% block main %}
+
+<div id="organizations-table">
+
+  {{ tab_group.render }}
+</div>
+
+{% endblock %}

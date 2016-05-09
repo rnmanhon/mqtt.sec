@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Applications" %}{% endblock %}
+
+{% block page_header %}{% endblock page_header %}
+
+{% block main %}
+<div id="detailApplication">
+  <header>
+    <h4 class="name">
+      {{ application.name }}
+      {% if edit %}
+      <a href="{% url 'horizon:idm:myApplications:edit' application.id %}" class="small"><i class="fa fa-edit"></i><span>edit</span></a>
+      {% endif %}
+      {% if manage_roles %}
+      <a href="{% url 'horizon:idm:myApplications:roles_manage' application.id %}" class="small"><i class="fa fa-cogs"></i><span>manage roles</span></a>
+      {% endif %}
+    </h4>
+    <div class="logo">
+      <img alt="application logo" src="{{ image }}">
+    </div>
+  </header>
+  <div class="panel panel-default info">
+    <div class="panel-body">
+      <div class="description">
+        <h5>
+          Description
+        </h5>
+
+        <div class="info expander">
+          {% if application.description %}
+          <p>{{ application.description }}</p>
+          {% else %}
+          <p><i>No description available</i></p>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="url">
+        <h5>URL</h5>
+        <p>{{ application.url }}</p>
+      </div>
+      <div class="callback_url">
+        <h5>Callback URL</h5>
+        <p>{{ application.redirect_uris.0 }}</p>
+      </div>
+      {% if viewCred %}
+        <div class="extra">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" href="#collapse_pep_proxy" aria-expanded="true" aria-controls="collapse_pep_proxy">
+              PEP Proxy
+            </a>
+          </h4>
+          <div id="collapse_pep_proxy" class="form-group collapse {% if pep_proxy_password %}in{% endif %}" role="tabpanel">
+            {% if application.pep_proxy_name %}
+              <div>
+                <h6 class="panel-heading">Username</h6>
+                <p>{{ application.pep_proxy_name }}</p>
+                {% if pep_proxy_password %}
+                  <h6 class="panel-heading">Password</h6>
+                  <p class="info">{{ pep_proxy_password }}</p>
+                {% endif %}
+                <a href="{% url 'horizon:idm:myApplications:reset_password_pep' application.id %}" class="btn btn-default">Reset password</a>
+                <a href="{% url 'horizon:idm:myApplications:delete_pep' application.id %}" class="btn btn-danger">Delete PEP Proxy</a>
+              </div>
+            {% else %}
+              <h6 class="panel-heading"></h6>
+              <a href="{% url 'horizon:idm:myApplications:register_pep' application.id %}" class="btn btn-default">Register a new PEP Proxy</a>
+            {% endif %}
+          </div>
+        </div>
+        <div class="extra">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" href="#collapse_oauth2_credentials" aria-expanded="true" aria-controls="collapse_oauth2_credentials">
+              OAuth2 Credentials
+            </a>
+          </h4>
+          <div id="collapse_oauth2_credentials" class="form-group collapse" role="tabpanel">
+            <div>
+              <h6 class="panel-heading">Client ID</h6>
+              <p>{{ application.id }}</p>
+            </div>
+            <div>
+              <h6 class="panel-heading">Client Secret</h6>
+              <p>{{ application.secret }}</p>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+
+  {{ auth_users_table.render}}
+
+  {{ organizations_table.render}}
+</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "horizon/common/_modal_form.html" %}
+{% load i18n %}
+{% load url from future %}
+
+    {% block modal-header %}
+        Lost your Authentication App?
+    {% endblock %}
+
+    {% block form_action %}{% url 'fiware_two_factor_lost_app' %}{% endblock %}
+    
+    {% block modal-body %}
+        <p>Write down the email address you associated to your account and you will be prompted with your security question.</p>
+
+        {% include "horizon/common/_form_fields.html" %}
+    {% endblock %}
+
+    {% block modal-footer %}
+        <button type="submit" class="btn btn-primary">{% trans "Send" %}</button>
+    {% endblock %}
+
+

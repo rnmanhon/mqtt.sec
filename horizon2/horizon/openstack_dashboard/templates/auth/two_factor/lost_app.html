@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Lost Authentication App" %}{% endblock %}
+
+{% block content %}
+    {% include '_header.html' %}
+    <div id="lost_app" class="container-fluid wrap">
+      <div class="row">
+        <div class="remember-password">
+        {% include 'auth/two_factor/_lost_app.html' %}
+        </div>
+      </div>
+    </div>
+    {% include "horizon/_messages.html" %}
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends 'horizon/_scripts.html' %}
+
+{% block custom_js_files %}
+
+<script type="text/javascript">
+
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        
+        reader.onload = function (e) {
+            $('#avatar-update').attr('src', e.target.result);
+            $('#avatar-update').Jcrop({
+                // onChange: showCoords,
+                onSelect: showCoords,
+                aspectRatio: 1,
+                setSelect:   [ 120, 120, 60, 60 ],
+                boxWidth: 650,
+
+            });
+        }
+        
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+$("#id_image").change(function(){
+    readURL(this);
+});
+
+function showCoords(c){
+    $("#id_x1").val(c.x); 
+    $("#id_y1").val(c.y);
+    $("#id_x2").val(c.x2); 
+    $("#id_y2").val(c.y2);
+}
+
+    
+// $(document).ready(function() {
+// 	url = "/static/dashboard/img/logos/small/user.png"
+// 	$.get(url)
+//     .done(function() { 
+//         $('#org-avatar').attr("src","/static/dashboard/img/logos/small/group.png")
+//         console.log('done')
+//     }).fail(function() { 
+//     	//Poner imagen de cada organización. Pasar como nombre 
+//        $('#org-avatar').attr("src","/static/dashboard/img/logos/small/user.png")
+//        console.log('fail')
+//     })
+	
+	
+// });
+
+</script>
+{% endblock %}

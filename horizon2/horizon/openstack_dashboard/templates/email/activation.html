@@ -1,0 +1,9 @@
+{% extends "email/base_email.html" %}
+
+{% block content %}
+  <p>Hello {{ user.username }}!</p>
+
+  <p>Welcome to FIWARE Lab! By clicking on the link "I accept" below, you state that you have read and accepted the FIWARE Lab Terms and Conditions and the creation of your account will be confirmed:</p>
+
+  <p><a href="{{ activation_url }}" target="_blank">I accept</a></p>
+{% endblock %}

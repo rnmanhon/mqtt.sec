@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="UTF-8"?><taz:properties xmlns:taz="http://thalesgroup.com/authz/model/3.0/resource"><name>AppDomain</name><description>Domain for app {{ app_id }}</description></taz:properties>

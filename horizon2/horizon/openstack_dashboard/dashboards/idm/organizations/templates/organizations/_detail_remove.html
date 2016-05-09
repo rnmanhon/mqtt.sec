@@ -1,0 +1,26 @@
+{% extends "horizon/common/_modal_form.html" %}
+{% load i18n %}
+{% load url from future %}
+
+{% block form_id %}remove_org{% endblock %}
+{% block form_action %}{% url 'horizon:idm:organizations:remove' organization_id=organization_id %}{% endblock %}
+{% block form_class %}{% if inline_forms %}ajax-inline-create{% endif %}{% endblock %}
+
+{% block modal-header %}
+    <h4 class="modal-title">Remove from organization</h4> 
+{% endblock %}
+
+{% block modal-body %}
+    <p>Are you sure you want to exit this organization?</p>
+    <p class="alert alert-info"><i class="fa fa-info-circle"></i>You will have to log in again to access your account after this change.</p>
+
+    <fieldset>
+    	{% include "horizon/common/_form_fields.html" %}
+  	</fieldset>
+{% endblock %}
+
+{% block modal-footer %}
+  <input class="btn btn-danger pull-right {% if inline_forms%}ajax-inline-create always-enabled{% endif %}" 
+    type="submit" 
+    value="{% trans "Remove" %}" />
+{% endblock %}

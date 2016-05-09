@@ -1,0 +1,34 @@
+{% extends "email/base_email.html" %}
+
+{% block content %}
+  <p>Hello {{ user.username }}!</p>
+
+  <p>Your current FIWARE Lab <b>{{ account_type }} account</b> will expire at {{ end_date }}.</p>
+
+  <p>Once your account expires, you will be <b>basic user</b>. As such, you will not be allowed to use the cloud resources associated with your authorized organization anymore. If you want to continue to use it, please request a Community Account following the <a href="http://forge.fiware.org/plugins/mediawiki/wiki/fiware/index.php/FIWARE_Lab:_Upgrade_to_Community_Account" style="color: #193B6B; text-decoration: none;" onMouseOver= "this.style.cssText= 'color: #48B9C9; text-decoration: none;'" onMouseOut= "this.style.cssText= 'color: #193B6B; text-decoration: none;'">steps defined here</a>.</p>
+
+  <p>Following the update of your account status, <b>all the resources created in the FIWARE Cloud Portal asociated with your authorized organization will be deleted</b>. We encourage you to take all the actions you might require as soon as posible.</p>
+
+  <p>For your information, your current account details: </p>
+
+  <p>Current account type: <b>{{ account_type }}</b></p>
+  {% if regions %}
+    <p>Authorized regions: 
+      <b>
+      {% for region in regions%}
+        {{ region }}{% if not forloop.last %}, {% endif %}
+      {% endfor %}
+      </b>
+    </p>
+  {% endif %}
+  {% if started_at %}
+    <p>Started at: <b>{{ started_at }}</b></p>
+  {% endif %}
+  {% if end_date %}
+    <p>Expires at: <b>{{ end_date }}</b></p>
+  {% endif %}
+
+  <p>Keep enjoying FIWARE Lab,</p>
+  <p>FIWARE Lab administrators.</p>
+  {% include "email/_massive_email_footer.html" %}
+{% endblock %}

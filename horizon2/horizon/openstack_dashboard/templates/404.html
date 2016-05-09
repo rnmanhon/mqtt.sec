@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load url from future %}
+
+{% block title %} - {% trans "Page Not Found" %}{% endblock %}
+
+{% block content %}
+  <div id="right_content">
+    <div class="well">
+      <h2>Not found. 404</h2>
+      <p>{% trans "The resource you were looking for doesn't exist" %}</p>
+    </div>
+  </div>
+{% endblock %}
+
+{% block sidebar %}
+  <div id="sidebar">
+    <ul id="navigation">
+      {% block nav_home %}
+      <li><h3><a href="{% url 'index' %}">{% trans "Home" %}</a></h3></li>
+      {% endblock %}
+
+      {% block nav_projects %}
+      <li><h3><a href="{% url 'index' %}">{% trans "Projects" %}</a></h3></li>
+      {% endblock %}
+    </ul>
+  </div> <!-- end sidebar -->
+{% endblock %}

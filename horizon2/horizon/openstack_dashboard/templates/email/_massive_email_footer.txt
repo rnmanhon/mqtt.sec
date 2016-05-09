@@ -1,0 +1,12 @@
+
+---
+
+You are receiving this message because you are a registered in https://account.lab.fiware.org as a FIWARE Lab user. Should you wish to remove your account, you need to follow four simple steps: 
+
+1. Log on https://account.lab.fiware.org FIWARE Lab
+
+2. Click on the dropdown menu next to your user name (upper right corner)
+
+3. Select "Settings"
+
+4. Click on "Cancel account" and confirm.

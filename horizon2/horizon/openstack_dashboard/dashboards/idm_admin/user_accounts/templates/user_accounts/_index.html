@@ -1,0 +1,30 @@
+{% extends "horizon/common/_modal_form.html" %}
+{% load i18n %}
+{% load url from future %}
+
+
+{% block form_id %}{% endblock %}
+{% block form_action %}{% url 'horizon:idm_admin:user_accounts:index' %}{% endblock %}
+
+
+{% block modal_id %}user_accounts{% endblock %}
+{% block modal-header %}
+    {% include "horizon/common/_domain_page_header.html" with title="Manage User Accounts" %}
+{% endblock %}
+
+{% block modal-body %}
+
+<h5>Input the email of the user you want to manage.</h5>
+
+<fieldset>
+    {% include "horizon/common/_form_fields.html" %}
+</fieldset>
+
+
+{% endblock %}
+
+{% block modal-footer %}
+
+    <button type="submit" class="btn btn-primary">Find</button>
+
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Registration" %}{% endblock %}
+
+{% block body_id %}splash{% endblock %}
+
+{% block content %}
+  {% include '_header.html' %}
+  <div id="registration" class="container-fluid wrap">
+    <div class="row">
+      {% include 'auth/_presentation.html' %}
+      {% include 'auth/registration/_registration_form.html' %}
+    </div>
+  </div>
+  
+  {% include "horizon/_messages.html" %}
+
+  <script type="text/javascript">
+    $(function () {
+      $('[data-toggle="popover"]').popover({html:true})
+    })
+  </script>
+{% endblock %}

@@ -1,0 +1,29 @@
+Hello {{ user.username }}!
+
+Your current FIWARE Lab {{ account_type }} account will expire at {{ end_date }}.
+
+Once your account expires, you will be basic user. As such, you will not be allowed to use the cloud resources associated with your authorized organization anymore. If you want to continue to use it, please request a Community Account following the steps defined at http://forge.fiware.org/plugins/mediawiki/wiki/fiware/index.php/FIWARE_Lab:_Upgrade_to_Community_Account.
+
+Following the update of your account status, all the resources created in the FIWARE Cloud Portal asociated with your authorized organization will be deleted. We encourage you to take all the actions you might require as soon as posible.
+
+For your information, your current account details: 
+
+Current account type: {{ account_type }}
+{% if regions %}
+  Authorized regions: 
+    
+    {% for region in regions%}
+      {{ region }}{% if not forloop.last %}, {% endif %}
+    {% endfor %}
+    
+  
+{% endif %}
+{% if started_at %}
+  Started at: {{ started_at }}
+{% endif %}
+{% if end_date %}
+  Expires at: {{ end_date }}
+{% endif %}
+
+Keep enjoying FIWARE Lab,
+FIWARE Lab administrators.

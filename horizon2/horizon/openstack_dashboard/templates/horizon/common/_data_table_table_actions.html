@@ -1,0 +1,21 @@
+{% load i18n %}
+<div class="table_actions clearfix">
+  {% block table_filter %}
+    {% if filter.filter_type == 'query' %}
+      <div class="filter table_search client">
+        <input class="form-control" value="{{ filter.filter_string|default:'' }}" type="text" name="{{ filter.get_param_name }}" placeholder="filter"/>
+      </div>
+    {% endif %}
+    <div id="spinner_{{ slug }}" class="{% if filter %}filtering{% else %}loading{% endif %}-spinner-inline"><i class="fa fa-circle-o-notch fa-spin"></i></div>
+  {% endblock table_filter %}
+  <div class="btn-group"> 
+    {% block table_actions %}
+
+      {% for action in table_actions_buttons %}
+
+        {%  include "horizon/common/_data_table_table_action.html" %}
+
+      {% endfor %}
+    {% endblock table_actions %}
+  </div>
+</div>

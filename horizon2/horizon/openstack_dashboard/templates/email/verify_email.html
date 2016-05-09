@@ -1,0 +1,10 @@
+{% extends "email/base_email.html" %}
+
+{% block content %}
+  <p>Hello {{ user.username }}!</p>
+
+  <p>You have requested to change your FIWARE-Lab email account to this one. Follow the link to
+  finish the process.</p>
+
+  <p><a href="{{ url }}" target="_blank">Verify account</a></p>
+{% endblock %}

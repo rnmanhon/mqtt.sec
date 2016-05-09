@@ -1,0 +1,28 @@
+{% extends "horizon/common/_modal_form.html" %}
+{% load i18n %}
+{% load url from future %}
+
+
+{% block form_id %}{% endblock %}
+{% block form_action %}{% url 'horizon:idm:myApplications:create' %}{% endblock %}
+
+
+{% block modal_id %}create_application_modal{% endblock %}
+{% block modal-header %}
+	{% include "idm/myApplications/steps/_step-1.html" %}
+
+{% endblock %}
+
+{% block modal-body %}
+
+<fieldset>
+    {% include "horizon/common/_form_fields.html" %}
+</fieldset>
+
+{% endblock %}
+
+{% block modal-footer %}
+
+    <button type="submit" class="btn btn-primary">{% trans "Next" %}</button>
+
+{% endblock %}

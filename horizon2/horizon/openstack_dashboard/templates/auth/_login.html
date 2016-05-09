@@ -1,0 +1,52 @@
+{% extends "horizon/common/_modal_form.html" %}
+{% load i18n %}
+{% load url from future %}
+
+<div class="login">
+  {% block modal-header %}Log In{% endblock %}
+  {% block modal_class %}login {% if hide %}modal hide{% endif %}{% endblock %}
+
+  {% block form_action %}{% url 'login' %}{% endblock %}
+  {% block autocomplete %}{{ HORIZON_CONFIG.password_autocomplete }}{% endblock %}
+
+  {% block modal-body %}
+    {% if request.user.is_authenticated and 'next' in request.GET %}
+    <div class="form-group clearfix error">
+      <span class="help-block"><p>{% trans "You do not have permission to access the resource:" %}</p>
+        <p><b>{{ request.GET.next }}</b></p>
+        <p>{% url 'horizon:user_home' as home_url %}{% blocktrans %}Login as different user or go back to <a href="{{ home_url }}"> home page</a>{% endblocktrans %}</p>
+      </span>
+    </div>
+    {% endif  %}
+    {% if request.COOKIES.logout_reason %}
+    <div class="form-group clearfix error">
+      <span class="help-block"><p>{{ request.COOKIES.logout_reason }}</p></span>
+    </div>
+    {% endif %}
+    {% if next %}<input type="hidden" name="{{ redirect_field_name }}" value="{{ next }}" />{% endif %}
+    {% include "horizon/common/_form_fields.html" %}
+  {% endblock %}
+
+  {% block modal-footer %}
+    <div class="checkbox">
+      <label>
+        <input type="checkbox"> 
+        <span class="lbl padding-0">
+          remember me
+        </span>
+      </label>
+    </div>
+    <button type="submit" class="btn btn-primary pull-right">{% trans "Sign In" %}</button>
+    <div class="actions">
+      <a href="{% url 'fiware_auth_register' %}">
+        Sign up
+      </a>
+      <a href="{% url 'fiware_auth_request' %}">
+        Forgot password
+      </a>
+      <a href="{% url 'fiware_auth_confirmation' %}">
+        Didn't receive confirmation instructions?
+      </a>
+    </div>
+  {% endblock %}
+</div>

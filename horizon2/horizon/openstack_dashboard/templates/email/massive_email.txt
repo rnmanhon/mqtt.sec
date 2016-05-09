@@ -1,0 +1,7 @@
+
+{% block content %}
+
+	{{ text }}
+	{% include "email/_massive_email_footer.txt" %}
+
+{% endblock %}
