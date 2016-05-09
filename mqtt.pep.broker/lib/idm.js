@@ -2,6 +2,7 @@ var config = require('../config.js'),
     proxy = require('./HTTPClient.js');
 var querystring = require('querystring');
 var request = require('request');
+var _ = require('lodash-getpath');
 var Bunyan = require('bunyan');
 var logger = Bunyan.createLogger({
     name: 'pepIdm',
@@ -132,6 +133,8 @@ var IDM = (function() {
                 var requestOptions;
                 var path = "/oauth2/token";
                 logger.info('grantAccessToken .... ');
+                logger.debug('userName: ' + userName);
+                logger.debug('userPassword: %j ', userPassword);
 
                 var clientID = config.app_id;
                 var clientSecret = config.app_secret;
@@ -140,7 +143,7 @@ var IDM = (function() {
                 var form = {
                     grant_type: 'password',
                     username: userName,
-                    password: userPassword,
+                    password: userPassword.toString(),
                     redirect_uri: config.app_redirectUrl
                 };
 

@@ -42,8 +42,9 @@ var server = new mosca.Server({
 
 server.on('ready', setup);
 
-
 var authenticate = function(client, username, password, callback) {
+//     var authorized = (username === 'idm')
+//    callback(null, authorized);
     IDM.grantAccessToken(username, password).then(function(accessToken) {
         logger.info("access  allowed to connection, access token is  " + accessToken);
         client.auth_token = accessToken;
