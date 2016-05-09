@@ -18,7 +18,7 @@ var logger = Bunyan.createLogger({
 });
 
 if (config.tokens_engine === 'keystone' && config.azf.enabled === true) {
-    log.error('Keystone token engine is not compatible with AuthZForce. Please review configuration file.');
+    logger.error('Keystone token engine is not compatible with AuthZForce. Please review configuration file.');
     return;
 }
 process.on('uncaughtException', function(err) {
@@ -27,11 +27,11 @@ process.on('uncaughtException', function(err) {
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 // populate the token for PEP user which is used to check token in the future
-log.info('Starting PEP proxy. Keystone authentication ...');
+logger.info('Starting PEP proxy. Keystone authentication ...');
 IDM.authenticate(function(token) {
-    log.info('Success authenticating PEP proxy. Proxy Auth-token: ', token);
+    logger.info('Success authenticating PEP proxy. Proxy Auth-token: ', token);
 }, function(status, e) {
-    log.error('Error in keystone communication', e);
+    logger.error('Error in keystone communication', e);
 });
 
 
@@ -43,27 +43,43 @@ var server = new mosca.Server({
 server.on('ready', setup);
 
 
-/ Accepts the connection if the username and password are valid
 var authenticate = function(client, username, password, callback) {
-
-
-
-
-    var authorized = (username === 'alice' && password === 'secret');
-    if authorized client.user = username;
-    callback(null, authorized);
+    IDM.grantAccessToken(username, password).then(function(accessToken) {
+        logger.info("access  allowed to connection, access token is  " + accessToken);
+        client.auth_token = accessToken;
+        callback(null, true);
+    }).catch(function(error) {
+        logger.info("connection not allowed ..." + error);
+        callback(null, false);
+    })
 }
 
 // In this case the client authorized as alice can publish to /users/alice taking
 // the username from the topic and verifing it is the same of the authorized user
 var authorizePublish = function(client, topic, payload, callback) {
-    callback(null, Root.pep(client.auth_token, 'PUB', topic));
+    Root.pep(client.auth_token, 'PUB', topic).then(function() {
+        logger.info("access  allowed to PUB on " + topic);
+        callback(null, true);
+    }).catch(function(error) {
+        logger.info("access not allow" + error);
+        callback(null, false);
+    });
 }
 
 // In this case the client authorized as alice can subscribe to /users/alice taking
 // the username from the topic and verifing it is the same of the authorized user
 var authorizeSubscribe = function(client, topic, callback) {
-    callback(null, Root.pep(client.auth_token, 'SUB', topic));
+    // remove the last wildcard character
+    var topicWithoutWildcard = topic.value.replace(/\*$/, "");
+    logger.debug("topic: " + topic);
+    logger.debug("topicWithoutWildcard: " + topicWithoutWildcard);
+    Root.pep(client.auth_token, 'SUB', topicWithoutWildcard).then(function() {
+        logger.info("access  allowed to SUB on " + topic);
+        callback(null, true);
+    }).catch(function(error) {
+        logger.info("access not allow" + error);
+        callback(null, false);
+    });
 }
 
 function setup() {

@@ -38,8 +38,7 @@ config.tokens_engine = 'oauth2';
 
 config.app_id = '589ad81257af4de190622a56ef52726e';
 config.app_secret = 'af34af2ee01940abab221f8b0969fddb';
-
-
+config.app_redirectUrl = 'http://u.ray:3000/secApp';
 
 
 //config.app_mqtt_host = '172.17.0.1';

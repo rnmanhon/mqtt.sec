@@ -14,162 +14,64 @@ var logger = Bunyan.createLogger({
 
 var Root = (function() {
     var pep = function(auth_token, action, topic) {
-        if (auth_token === undefined) {
-            logger.error('Auth-token not found!');
-            return false;
-        } else {
-            if (config.magic_key && config.magic_key === auth_token) {
-                logger.info('auth_token equal to magic key, Access allowed!');
-                return true;
+
+        return new Promise(function(success, fail) {
+            if (auth_token === undefined) {
+                logger.error('Auth-token not found!');
+                fail("Auth-token not found");
+            } else {
+                if (config.magic_key && config.magic_key === auth_token) {
+                    logger.info('auth_token equal to magic key, Access allowed!');
+                    success();
+                }
+
+                IDM.check_token(auth_token, function(user_info) {
+                    if (config.azf.enabled) {
+
+                        AZF.check_permissions(auth_token, user_info, action, topic, function() {
+                            logger.info('auth_token valid (azf enabled)!');
+                            success();
+                        }, function(status, e) {
+                            if (status === 401) {
+                                log.error('User access-token not authorized by AZF: ', e);
+                                fail('User access-token not authorized by AZF');
+                            } else if (status === 404) {
+                                log.error('Domain not found in AZF: ', e);
+                                fail('Domain not found in AZF');
+                            } else {
+                                log.error('Error in AZF communication ', e);
+                                fail('Error in AZF communication');
+                            }
+                        });
+                    } else {
+                        logger.info('auth_token valid (azf disabled)!');
+                        success();
+                    }
+
+                }, function(status, e) {
+                    if (status === 404) {
+                        log.error('User access-token not authorized by IDM');
+                        fail('User access-token not authorized by IDM');
+                    } else {
+                        log.error('Error in IDM communication ', e);
+                        fail('Error in IDM communication');
+                    }
+                });
             }
 
-            IDM.check_token(auth_token, function(user_info) {
-                if (config.azf.enabled) {
+        })
 
-                    AZF.check_permissions(auth_token, user_info, action, topic, function() {
-                        logger.info('auth_token valid (azf enabled)!');
-                        return true;
-                    }, function(status, e) {
-                        if (status === 401) {
-                            log.error('User access-token not authorized by AZF: ', e);
-                            return false;
-                        } else if (status === 404) {
-                            log.error('Domain not found in AZF: ', e);
-                            return false;
-                        } else {
-                            log.error('Error in AZF communication ', e);
-                            return false;
-                        }
-                    });
-                } else {
-                    logger.info('auth_token valid (azf disabled)!');
-                    return true;
-                }
-
-
-            }, function(status, e) {
-                if (status === 404) {
-                    log.error('User access-token not authorized by IDM');
-                    return false;
-                } else {
-                    log.error('Error in IDM communication ', e);
-                    return false;
-                }
-            });
-        }
     }
 
 
 
 
 
-//    var pep = function(req, res) {
-//
-//        var auth_token = req.headers['x-auth-token'];
-//
-//        if (auth_token === undefined && req.headers['authorization'] !== undefined) {
-//            var header_auth = req.headers['authorization'].split(' ')[1];
-//            auth_token = new Buffer(header_auth, 'base64').toString();
-//        }
-//
-//        if (auth_token === undefined) {
-//            log.error('Auth-token not found in request header');
-//            var auth_header = 'IDM uri = ' + config.account_host;
-//            res.set('WWW-Authenticate', auth_header);
-//            res.send(401, 'Auth-token not found in request header');
-//        } else {
-//
-//            if (config.magic_key && config.magic_key === auth_token) {
-//                var options = {
-//                    host: config.app_host,
-//                    port: config.app_port,
-//                    path: req.url,
-//                    method: req.method,
-//                    headers: proxy.getClientIp(req, req.headers)
-//                };
-//                proxy.sendData('http', options, req.body, res);
-//                return;
-//
-//            }
-//
-//            IDM.check_token(auth_token, function(user_info) {
-//
-//                if (config.azf.enabled) {
-//
-//                    AZF.check_permissions(auth_token, user_info, req, function() {
-//
-//                        redir_request(req, res, user_info);
-//
-//                    }, function(status, e) {
-//                        if (status === 401) {
-//                            log.error('User access-token not authorized: ', e);
-//                            res.send(401, 'User token not authorized');
-//                        } else if (status === 404) {
-//                            log.error('Domain not found: ', e);
-//                            res.send(404, e);
-//                        } else {
-//                            log.error('Error in AZF communication ', e);
-//                            res.send(503, 'Error in AZF communication');
-//                        }
-//
-//                    });
-//                } else {
-//                    redir_request(req, res, user_info);
-//                }
-//
-//
-//            }, function(status, e) {
-//                if (status === 404) {
-//                    log.error('User access-token not authorized');
-//                    res.send(401, 'User token not authorized');
-//                } else {
-//                    log.error('Error in IDM communication ', e);
-//                    res.send(503, 'Error in IDM communication');
-//                }
-//            });
-//        };
-//    };
-//
-//    var public = function(req, res) {
-//        redir_request(req, res);
-//    };
-//
-//    var redir_request = function(req, res, user_info) {
-//
-//        if (user_info) {
-//
-//            log.info('Access-token OK. Redirecting to app...');
-//
-//            if (config.tokens_engine === 'keystone') {
-//                req.headers['X-Nick-Name'] = user_info.token.user.id;
-//                req.headers['X-Display-Name'] = user_info.token.user.id;
-//                req.headers['X-Roles'] = user_info.token.roles;
-//                req.headers['X-Organizations'] = user_info.token.project;
-//            } else {
-//                req.headers['X-Nick-Name'] = user_info.id;
-//                req.headers['X-Display-Name'] = user_info.displayName;
-//                req.headers['X-Roles'] = user_info.roles;
-//                req.headers['X-Organizations'] = user_info.organizations;
-//            }
-//        } else {
-//            log.info('Public path. Redirecting to app...');
-//        }
-//
-//        var protocol = config.app_ssl ? 'https' : 'http';
-//
-//        var options = {
-//            host: config.app_host,
-//            port: config.app_port,
-//            path: req.url,
-//            method: req.method,
-//            headers: proxy.getClientIp(req, req.headers)
-//        };
-//        proxy.sendData(protocol, options, req.body, res);
-//    };
+
 
     return {
         pep: pep,
-//        public: public
+        //        public: public
     }
 })();
 

@@ -1,6 +1,7 @@
 var config = require('../config.js'),
     proxy = require('./HTTPClient.js');
-
+var querystring = require('querystring');
+var request = require('request');
 var Bunyan = require('bunyan');
 var logger = Bunyan.createLogger({
     name: 'pepIdm',
@@ -121,66 +122,71 @@ var IDM = (function() {
     };
 
 
-    var grantAccessToken = function(userName, userPassword, callback, callbackError) {
-        var apiOptions = {
-            horizonServer: "http://" + config.horizon_host + ":" + config.horizon_port
-        };
+    //    var grantAccessToken = function(userName, userPassword, callback, callbackError) {
+    var grantAccessToken = function(userName, userPassword) {
+        return new Promise(function(callback, callbackError) {
+                var apiOptions = {
+                    horizonServer: "http://" + config.horizon_host + ":" + config.horizon_port
+                };
 
-        var requestOptions, path;
-        logger.info('grantAccessToken .... ');
+                var requestOptions;
+                var path = "/oauth2/token";
+                logger.info('grantAccessToken .... ');
 
-        var clientID = config.app_id;
-        var clientSecret = config.app_secret;
+                var clientID = config.app_id;
+                var clientSecret = config.app_secret;
 
-        var auth = "Basic " + new Buffer(cilentID + ":" + clientSecret).toString("base64");
-        var form = {
-            grant_type: 'password',
-            username: userName,
-            password: userPassword,
-            redirect_uri: config.app_redirectUrl
-        };
+                var auth = "Basic " + new Buffer(clientID + ":" + clientSecret).toString("base64");
+                var form = {
+                    grant_type: 'password',
+                    username: userName,
+                    password: userPassword,
+                    redirect_uri: config.app_redirectUrl
+                };
 
-        var formData = querystring.stringify(form);
-        var contentLength = formData.length;
+                logger.debug('redirect_uri ' + form.redirect_uri);
+                var formData = querystring.stringify(form);
+                var contentLength = formData.length;
 
-        logger.debug('form %j ', form);
-        logger.debug('formData ' + formData);
-        logger.debug('contentLength ' + contentLength);
+                logger.debug('form %j ', form);
+                logger.debug('formData ' + formData);
+                logger.debug('contentLength ' + contentLength);
 
-        requestOptions = {
-            url: apiOptions.horizonServer + path,
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Accept': 'application/json',
-                "Authorization": auth,
-                'Content-Length': contentLength,
-            },
-            body: formData,
-        };
-        logger.debug("requestOptions  %j ", requestOptions);
+                requestOptions = {
+                    url: apiOptions.horizonServer + path,
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Accept': 'application/json',
+                        "Authorization": auth,
+                        'Content-Length': contentLength,
+                    },
+                    body: formData,
+                };
+                logger.debug("requestOptions  %j ", requestOptions);
 
-        request(
-            requestOptions,
-            function(err, response, body) {
-                var i, data;
-                logger.info('after return from horizon server .... ');
-                logger.debug('tken return response are %j', response);
-                logger.debug('tken return body are %j', JSON.parse(body));
+                request(
+                    requestOptions,
+                    function(err, response, body) {
+                        var i, data;
+                        logger.info('after return from horizon server .... ');
+                        logger.debug('token return response are %j', response);
+                        logger.debug('token return body are %j', JSON.parse(body));
 
-                if ((typeof(response) != "undefined") &&
-                    (response.statusCode === 200)) {
+                        if ((typeof(response) != "undefined") &&
+                            (response.statusCode === 200)) {
 
-                    var accessToken = _.getPath(JSON.parse(body), "access_token");
-                    console.log('accessToken  is ', accessToken);
-                    callback(accessToken);
-                } else {
-                    console.log('err %j', err);
-                    console.log('response %j ', response);
-                    callbackError(503, 'Error in getting access token from IDM');
-                }
-            }
-        ); // request
+                            var accessToken = _.getPath(JSON.parse(body), "access_token");
+                            console.log('accessToken  is ', accessToken);
+                            callback(accessToken);
+                        } else {
+                            console.log('err %j', err);
+                            console.log('response %j ', response);
+                            callbackError(503, 'Error in getting access token from IDM');
+                        }
+                    }
+                ); // request
+            }) // Promise
     };
 
     return {

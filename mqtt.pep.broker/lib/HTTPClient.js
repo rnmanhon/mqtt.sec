@@ -1,8 +1,16 @@
 var express = require('express'),
     app = express(),
     XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+var Bunyan = require('bunyan');
+var logger = Bunyan.createLogger({
+    name: 'pepHttpClient',
+    streams: [{
+        level: Bunyan.DEBUG,
+        path: './log.log'
+    }]
+});
 
-var log = require('./logger').logger.getLogger("HTTP-Client");
+//var log = require('./logger').logger.getLogger("HTTP-Client");
 
 exports.getClientIp = function(req, headers) {
   var ipAddress = req.connection.remoteAddress;
@@ -28,7 +36,7 @@ exports.sendData = function(port, options, data, res, callBackOK, callbackError)
     var xhr, body, result;
 
     callbackError = callbackError || function(status, resp) {
-        log.error("Error: ", status, resp);
+        logger.error("Error: ", status, resp);
         res.statusCode = status;
         res.send(resp);
     };
@@ -38,8 +46,8 @@ exports.sendData = function(port, options, data, res, callBackOK, callbackError)
             var header = headers[idx];
             res.setHeader(idx, headers[idx]);
         }
-        log.debug("Response: ", status);
-        log.debug(" Body: ", resp);
+        logger.debug("Response: ", status);
+        logger.debug(" Body: ", resp);
         res.send(resp);
     };
 
@@ -92,9 +100,9 @@ exports.sendData = function(port, options, data, res, callBackOK, callbackError)
     };
 
     var flag = false;
-    log.debug("Sending ", options.method, " to: " + url);
-    log.debug(" Headers: ", options.headers);
-    log.debug(" Body: ", data);
+    logger.debug("Sending ", options.method, " to: " + url);
+    logger.debug(" Headers: ", options.headers);
+    logger.debug(" Body: ", data);
     if (data !== undefined) {
         try {
             xhr.send(data);
