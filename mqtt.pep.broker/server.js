@@ -73,10 +73,14 @@ var authorizeSubscribe = function(client, topic, callback) {
     // remove the last wildcard character
     logger.debug("topic: " + topic);
     
-    var topicWithoutWildcard = topic.replace(/\*$/, "");
+//    var topicWithoutWildcard = topic.replace(/[#\+]$/, "");
+    // no need to replace if wildcard only appear in the last character
+    var topicWithoutWildcard = topic;
+    
+    
     logger.debug("topicWithoutWildcard: " + topicWithoutWildcard);
     Root.pep(client.auth_token, 'SUB', topicWithoutWildcard).then(function() {
-        logger.info("access  allowed to SUB on " + topic);
+        logger.info("access  allowed to SUB on " + topicWithoutWildcard);
         callback(null, true);
     }).catch(function(error) {
         logger.info("access not allow to SUB on topic "+ topicWithoutWildcard + " Error: " + error);

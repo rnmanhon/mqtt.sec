@@ -90,7 +90,7 @@ var IDM = (function() {
                 callback(tokens_cache[token].user_info);
                 return;
             } else {
-                log.info('Token in cache expired');
+                logger.info('Token in cache expired');
                 delete tokens_cache[token];
             }
         }
