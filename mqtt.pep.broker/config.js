@@ -12,9 +12,11 @@ config.tls = {
 
 config.azf = {
     enabled: true,
-    host: 'authzforce',
+//    host: 'authzforce',
+    host: 'localhost',
     protocol: 'http',
-    port: 8080,
+//    port: 8080,
+        port: 8084,
     path: '/authzforce/domains/',
     app_azf_domain: 'A0bdIbmGEeWhFwcKrC9gSQ',
     custom_policy: undefined // use undefined to default policy checks (HTTP verb + path).

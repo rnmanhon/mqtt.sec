@@ -62,7 +62,7 @@ var authorizePublish = function(client, topic, payload, callback) {
         logger.info("access  allowed to PUB on " + topic);
         callback(null, true);
     }).catch(function(error) {
-        logger.info("access not allow" + error);
+        logger.info("access not allow to PUB on topic "+ topic + " Error: " + error);
         callback(null, false);
     });
 }
@@ -71,14 +71,15 @@ var authorizePublish = function(client, topic, payload, callback) {
 // the username from the topic and verifing it is the same of the authorized user
 var authorizeSubscribe = function(client, topic, callback) {
     // remove the last wildcard character
-    var topicWithoutWildcard = topic.value.replace(/\*$/, "");
     logger.debug("topic: " + topic);
+    
+    var topicWithoutWildcard = topic.replace(/\*$/, "");
     logger.debug("topicWithoutWildcard: " + topicWithoutWildcard);
     Root.pep(client.auth_token, 'SUB', topicWithoutWildcard).then(function() {
         logger.info("access  allowed to SUB on " + topic);
         callback(null, true);
     }).catch(function(error) {
-        logger.info("access not allow" + error);
+        logger.info("access not allow to SUB on topic "+ topicWithoutWildcard + " Error: " + error);
         callback(null, false);
     });
 }

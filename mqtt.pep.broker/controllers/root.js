@@ -33,13 +33,13 @@ var Root = (function() {
                             success();
                         }, function(status, e) {
                             if (status === 401) {
-                                log.error('User access-token not authorized by AZF: ', e);
+                                logger.error('User access-token not authorized by AZF: ', e);
                                 fail('User access-token not authorized by AZF');
                             } else if (status === 404) {
-                                log.error('Domain not found in AZF: ', e);
+                                logger.error('Domain not found in AZF: ', e);
                                 fail('Domain not found in AZF');
                             } else {
-                                log.error('Error in AZF communication ', e);
+                                logger.error('Error in AZF communication ', e);
                                 fail('Error in AZF communication');
                             }
                         });
@@ -50,10 +50,10 @@ var Root = (function() {
 
                 }, function(status, e) {
                     if (status === 404) {
-                        log.error('User access-token not authorized by IDM');
+                        logger.info('User access-token not authorized by IDM');
                         fail('User access-token not authorized by IDM');
                     } else {
-                        log.error('Error in IDM communication ', e);
+                        logger.error('Error in IDM communication ', e);
                         fail('Error in IDM communication');
                     }
                 });
